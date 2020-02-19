@@ -14,28 +14,34 @@ int jogada = 1;
 char palavra[20];
 bool ganhou = false;
 char letra = ' ';
+int ocorrencias = 0;
 //funcoes
 
 char desenho_forca();
 char advinha_palavra();
+bool acertar();
 
 int main() {
   cout << "palavra: ";
   cin >> palavra_sorteada;
   system("color 0a");
   tam_palavra = palavra_sorteada.size();
-  while (ganhou || jogada < 8) {
+  while (!ganhou && jogada < 8) {
     if (jogada == 7) {
       desenho_forca();
-      cout << "\n\nP E R D E U...\n\n";
-      system("pause");
+      if (!ganhou) {
+        cout << "\n\nP E R D E U...\n\n";
+        system("pause");
+      }
       break;
     } else {
       desenho_forca();
-      cout << "\n\nLetra: ";
-      cin >> letra;
-      system("cls");
-      jogada++;
+      if (!ganhou) {
+        cout << "\n\nLetra: ";
+        cin >> letra;
+        system("cls");
+        jogada++;
+      }
     }
   }
   return 0;
@@ -52,7 +58,6 @@ char desenho_forca() {
     for (int r = 0; r < 11; r++) {
       forca[r] = '_';
     }
-    advinha_palavra();
     break;
   case 2:
     forca[17] = '|';
@@ -62,7 +67,6 @@ char desenho_forca() {
     forca[40] = '-';
     forca[41] = '-';
     forca[42] = '-';
-    advinha_palavra();
     break;
   case 3:
     for (int w = 52, s = 0; w < 87; w++) {
@@ -71,22 +75,18 @@ char desenho_forca() {
       }
       s++;
     }
-    advinha_palavra();
     break;
   case 4:
     forca[53] = '\\';
     forca[65] = '\\';
-    advinha_palavra();
     break;
   case 5:
     forca[51] = '/';
     forca[61] = '/';
-    advinha_palavra();
     break;
   case 6:
     forca[95] = '/';
     forca[105] = '/';
-    advinha_palavra();
     break;
   case 7:
     forca[97] = '\\';
@@ -102,14 +102,35 @@ char desenho_forca() {
     }
   }
   cout << "\n\n";
-
+  advinha_palavra();
 }
 
 char advinha_palavra() {
+  if (jogada == 1) {
+    for (int e = 0; e < tam_palavra; e++) {
+      palavra[e] = '_';
+    }
+    for (int r = 0; r < tam_palavra; r++) {
+      cout << palavra[r] << " ";
+    }
+  } else {
+    acertar();
+    for (int r = 0; r < tam_palavra; r++) {
+      cout << palavra[r] << " ";
+    }
+  }
+}
+
+bool acertar() {
   for (int e = 0; e < tam_palavra; e++) {
-    palavra[e] = '_';
+    if (letra == palavra_sorteada[e]) {
+      palavra[e] = letra;
+      ocorrencias++;
+    }
   }
-  for (int r = 0; r < tam_palavra; r++) {
-    cout << palavra[r] << " ";
+  if (ocorrencias == tam_palavra) {
+    cout << "\n\nParabens!!\n\n";
+    ganhou = true;
   }
+  return true;
 }
