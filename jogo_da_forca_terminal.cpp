@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <stdlib.h>
+
 #include <string.h>
 
 using namespace std;
@@ -10,7 +12,8 @@ int tam_palavra = palavra_sorteada.size();
 char forca[120];
 int jogada = 1;
 char palavra[20];
-
+bool ganhou = false;
+char letra = ' ';
 //funcoes
 
 char desenho_forca();
@@ -19,20 +22,22 @@ char advinha_palavra();
 int main() {
   cout << "palavra: ";
   cin >> palavra_sorteada;
+  system("color 0a");
   tam_palavra = palavra_sorteada.size();
-  desenho_forca();
-  jogada = 2;
-  desenho_forca();
-  jogada = 3;
-  desenho_forca();
-  jogada = 4;
-  desenho_forca();
-  jogada = 5;
-  desenho_forca();
-  jogada = 6;
-  desenho_forca();
-  jogada = 7;
-  desenho_forca();
+  while (ganhou || jogada < 8) {
+    if (jogada == 7) {
+      desenho_forca();
+      cout << "\n\nP E R D E U...\n\n";
+      system("pause");
+      break;
+    } else {
+      desenho_forca();
+      cout << "\n\nLetra: ";
+      cin >> letra;
+      system("cls");
+      jogada++;
+    }
+  }
   return 0;
 }
 
@@ -47,6 +52,7 @@ char desenho_forca() {
     for (int r = 0; r < 11; r++) {
       forca[r] = '_';
     }
+    advinha_palavra();
     break;
   case 2:
     forca[17] = '|';
@@ -56,6 +62,7 @@ char desenho_forca() {
     forca[40] = '-';
     forca[41] = '-';
     forca[42] = '-';
+    advinha_palavra();
     break;
   case 3:
     for (int w = 52, s = 0; w < 87; w++) {
@@ -64,24 +71,29 @@ char desenho_forca() {
       }
       s++;
     }
+    advinha_palavra();
     break;
   case 4:
     forca[53] = '\\';
     forca[65] = '\\';
+    advinha_palavra();
     break;
   case 5:
     forca[51] = '/';
     forca[61] = '/';
+    advinha_palavra();
     break;
   case 6:
     forca[95] = '/';
     forca[105] = '/';
+    advinha_palavra();
     break;
   case 7:
     forca[97] = '\\';
     forca[109] = '\\';
     break;
   }
+
   for (int i = 0; i < 120; i++) {
     if (i % 11 == 0) {
       cout << "\n" << forca[i];
@@ -90,7 +102,7 @@ char desenho_forca() {
     }
   }
   cout << "\n\n";
-  advinha_palavra();
+
 }
 
 char advinha_palavra() {
